@@ -5,11 +5,21 @@
 
 */
 
-#include "pvocf.h"
+#include <stdlib.h>
+#include <string.h>
+#include <sndfile.h>
+#include "riffr.h"
+#include "pvocf_internal.h"
 
 int pvocf_close(struct pvocf *handle)
 {
-    (void)handle;
+    int rc = 0;
 
-    return 0;
+    if (handle) {
+        rc = riffr_close(handle->riffr);
+        memset(handle, 0, sizeof(*handle));
+        free(handle);
+    }
+
+    return rc ? 1 : 0;
 }

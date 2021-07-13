@@ -4,7 +4,7 @@
 #  Copyright (c) 2021 by Daniel Kelley
 #
 
-DEBUG ?= -g
+DEBUG ?= -g -O0
 
 PREFIX ?= /usr/local
 
@@ -13,7 +13,7 @@ ifneq ($(SANITIZE),)
 DEBUG += -fsanitize=$(SANITIZE)
 endif
 
-INC :=
+INC := -I/usr/local/include
 CPPFLAGS := $(INC) -MP -MMD
 
 WARN := -Wall
@@ -43,13 +43,14 @@ PVOCFLIB_SRC := pvocf_open.c
 PVOCFLIB_SRC += pvocf_close.c
 PVOCFLIB_SRC += pvocf_frame_count.c
 PVOCFLIB_SRC += pvocf_get_frame.c
-PVOCFLIB_LDLIBS := -lsndfile
+PVOCFLIB_SRC += pvocf_get_info.c
+PVOCFLIB_LDLIBS := -lriffr
 PVOCFLIB_OBJ := $(PVOCFLIB_SRC:%.c=%.o)
 PVOCFLIB_DEP := $(PVOCFLIB_SRC:%.c=%.d)
 OBJ += $(PVOCFLIB_OBJ)
 DEP += $(PVOCFLIB_DEP)
 
-PROG := pvocf-info.c
+PROG := pvocf-info
 
 VG ?= valgrind --leak-check=full
 
