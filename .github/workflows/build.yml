@@ -17,6 +17,7 @@ jobs:
       run: |
         git clone https://github.com/daniel-kelley/libriffr
         make -C libriffr
-        sudo make -C libriffr install
+        sudo make -C libriffr install PREFIX=/usr
+        sudo ldconfig -v
     - name: make
-      run: make
+      run: make PREFIX=/usr
