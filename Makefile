@@ -4,7 +4,7 @@
 #  Copyright (c) 2021 by Daniel Kelley
 #
 
-DEBUG ?= -g -O0
+DEBUG ?= -g
 
 PREFIX ?= /usr/local
 
@@ -22,7 +22,7 @@ WARN += -Wdeclaration-after-statement
 WARN += -Werror
 CFLAGS := $(WARN) $(DEBUG) -fPIC
 
-LDFLAGS := $(DEBUG) -L.
+LDFLAGS := $(DEBUG) -L. -L$(PREFIX)/lib
 LDLIBS := -lm
 
 PVOCFINFO_SRC := pvocf-info.c
