@@ -10,20 +10,25 @@
 
 static void show_info(struct pvocf *handle)
 {
-    const struct pvoc_data *data = pvocf_get_info(handle);
-    if (data) {
-        printf("dwVersion: %d\n",data->dwVersion);
-        printf("dwDataSize: %d\n",data->dwDataSize);
-        printf("wWordFormat: %d\n",data->wWordFormat);
-        printf("wAnalFormat: %d\n",data->wAnalFormat);
-        printf("wSourceFormat: %d\n",data->wSourceFormat);
-        printf("wWindowType: %d\n",data->wWindowType);
-        printf("nAnalysisBins: %d\n",data->nAnalysisBins);
-        printf("dwWinlen: %d\n",data->dwWinlen);
-        printf("dwOverlap: %d\n",data->dwOverlap);
-        printf("dwFrameAlign: %d\n",data->dwFrameAlign);
-        printf("fAnalysisRate: %g\n",data->fAnalysisRate);
-        printf("fWindowParam: %g\n",data->fWindowParam);
+    const struct pvoc_info *info = pvocf_get_info(handle);
+    if (info) {
+        printf("fmt.nChannels: %d\n",info->fmt.nChannels);
+        printf("fmt.nSamplesPerSec: %d\n",info->fmt.nSamplesPerSec);
+        printf("fmt.wBitsPerSample: %d\n",info->fmt.wBitsPerSample);
+        printf("fmt.wValidBitsPerSample: %d\n",info->fmt.wValidBitsPerSample);
+        printf("fmt.dwChannelMask: 0x%08x\n",info->fmt.dwChannelMask);
+        printf("pvoc.dwVersion: %d\n",info->pvoc.dwVersion);
+        printf("pvoc.dwDataSize: %d\n",info->pvoc.dwDataSize);
+        printf("pvoc.wWordFormat: %d\n",info->pvoc.wWordFormat);
+        printf("pvoc.wAnalFormat: %d\n",info->pvoc.wAnalFormat);
+        printf("pvoc.wSourceFormat: %d\n",info->pvoc.wSourceFormat);
+        printf("pvoc.wWindowType: %d\n",info->pvoc.wWindowType);
+        printf("pvoc.nAnalysisBins: %d\n",info->pvoc.nAnalysisBins);
+        printf("pvoc.dwWinlen: %d\n",info->pvoc.dwWinlen);
+        printf("pvoc.dwOverlap: %d\n",info->pvoc.dwOverlap);
+        printf("pvoc.dwFrameAlign: %d\n",info->pvoc.dwFrameAlign);
+        printf("pvoc.fAnalysisRate: %g\n",info->pvoc.fAnalysisRate);
+        printf("pvoc.fWindowParam: %g\n",info->pvoc.fWindowParam);
     }
 }
 

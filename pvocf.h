@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <inttypes.h>
+#include "riffr.h"
 
 struct pvocf;
 
@@ -31,13 +32,18 @@ struct pvoc_data {   /* 40 bytes */
     float       fWindowParam;   /* default 0.0f unless needed                */
 };
 
+struct pvoc_info {
+    struct riffr_wave_fmt fmt;
+    struct pvoc_data pvoc;
+};
+
 extern struct pvocf *pvocf_open(const char *filename);
 extern int pvocf_frame_count(struct pvocf *handle);
 extern int pvocf_get_frame(struct pvocf *handle,
                            uint32_t frame_id,
                            uint32_t num_frame,
                            float *frame);
-extern const struct pvoc_data *pvocf_get_info(struct pvocf *handle);
+extern const struct pvoc_info *pvocf_get_info(struct pvocf *handle);
 
 extern int pvocf_close(struct pvocf *handle);
 

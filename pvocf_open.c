@@ -54,7 +54,7 @@ static int pvocf_open_pvocex(struct pvocf *handle, struct riffr_chunk_type *form
         fmt_actual = riffr_read_data(handle->riffr,
                                      RIFFR_WAVE_FMT_FORMAT,
                                      header.size,
-                                     &handle->fmt);
+                                     &handle->info.fmt);
 
         if (fmt_actual < 0) {
             /* Error reading fmt chunk */
@@ -62,19 +62,21 @@ static int pvocf_open_pvocex(struct pvocf *handle, struct riffr_chunk_type *form
             break;
         }
 
-        if (fmt_actual != sizeof(handle->fmt)) {
+        if (fmt_actual != sizeof(handle->info.fmt)) {
             /* Error reading fmt chunk */
             err = -1;
             break;
         }
 
-        if (handle->fmt.cbSize != 62) {
-            /* FIXME: doube check */
+        /* This is just hardcoded in csound/OOps/pvfileio.c to 62... */
+        if (handle->info.fmt.cbSize != 62) {
             err = -1;
             break;
         }
 
-        if (memcmp(handle->fmt.SubFormat, pvocf_guid, sizeof(pvocf_guid))) {
+        if (memcmp(handle->info.fmt.SubFormat,
+                   pvocf_guid,
+                   sizeof(pvocf_guid))) {
             err = -1;
             break;
         }
@@ -84,7 +86,7 @@ static int pvocf_open_pvocex(struct pvocf *handle, struct riffr_chunk_type *form
         ext_actual = riffr_read_data(handle->riffr,
                                      PVOC_DATA_FORMAT,
                                      fmt_extension,
-                                     &handle->pvoc);
+                                     &handle->info.pvoc);
         if (ext_actual < 0) {
             err = -1;
             break;
@@ -95,7 +97,7 @@ static int pvocf_open_pvocex(struct pvocf *handle, struct riffr_chunk_type *form
             break;
         }
 
-        err = 0; /*???*/
+        err = 0;
     } while (0);
 
     return err;

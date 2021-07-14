@@ -8,11 +8,11 @@
 #include "pvocf_internal.h"
 #include "pvocf.h"
 
-const struct pvoc_data *pvocf_get_info(struct pvocf *handle)
+const struct pvoc_info *pvocf_get_info(struct pvocf *handle)
 {
-    struct pvoc_data *data = NULL;
+    struct pvoc_info *info = NULL;
     if (handle) {
-        data = &handle->pvoc;
+        info = &handle->info;
     }
-    return data;
+    return info;
 }
