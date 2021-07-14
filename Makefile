@@ -13,7 +13,7 @@ ifneq ($(SANITIZE),)
 DEBUG += -fsanitize=$(SANITIZE)
 endif
 
-INC := -I/usr/local/include
+INC := -I$(PREFIX)/include
 CPPFLAGS := $(INC) -MP -MMD
 
 WARN := -Wall
