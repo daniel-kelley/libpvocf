@@ -21,8 +21,7 @@
 
 struct pvocf {
     struct riffr *riffr;
-    struct riffr_wave_fmt fmt;
-    struct pvoc_data pvoc;
+    struct pvoc_info info;
 };
 
 #endif /* PVOCF_INTERNAL_H_ */
