@@ -6,3 +6,5 @@ See:
   https://spdx.org/licenses/LGPL-2.1-or-later.html
 
 License: LGPL-2.1-or-later
+
+![Build Status](https://github.com/daniel-kelley/libpvocf/workflows/Build/badge.svg)
