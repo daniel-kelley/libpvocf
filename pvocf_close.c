@@ -7,7 +7,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <sndfile.h>
 #include "riffr.h"
 #include "pvocf_internal.h"
 
