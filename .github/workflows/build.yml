@@ -15,9 +15,13 @@ jobs:
     - uses: actions/checkout@v2
     - name: prep
       run: |
+        sudo apt-get install csound
+        sudo apt-get install csound-utils
         git clone https://github.com/daniel-kelley/libriffr
         make -C libriffr
         sudo make -C libriffr install
         sudo ldconfig -v
     - name: make
       run: make
+    - name: make check
+      run: make check
