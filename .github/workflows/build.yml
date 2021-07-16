@@ -17,6 +17,7 @@ jobs:
       run: |
         sudo apt-get install csound
         sudo apt-get install csound-utils
+        sudo apt-get install clang-tools
         git clone https://github.com/daniel-kelley/libriffr
         make -C libriffr
         sudo make -C libriffr install
