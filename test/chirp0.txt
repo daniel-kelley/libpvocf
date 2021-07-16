@@ -1,0 +1,17 @@
+fmt.nChannels: 1
+fmt.nSamplesPerSec: 48000
+fmt.wBitsPerSample: 16
+fmt.wValidBitsPerSample: 16
+fmt.dwChannelMask: 0x00000000
+pvoc.dwVersion: 1
+pvoc.dwDataSize: 32
+pvoc.wWordFormat: 0
+pvoc.wAnalFormat: 0
+pvoc.wSourceFormat: 1
+pvoc.wWindowType: 1
+pvoc.nAnalysisBins: 2049
+pvoc.dwWinlen: 8192
+pvoc.dwOverlap: 1024
+pvoc.dwFrameAlign: 16392
+pvoc.fAnalysisRate: 46.875
+pvoc.fWindowParam: 0
