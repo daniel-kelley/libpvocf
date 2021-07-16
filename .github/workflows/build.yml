@@ -17,6 +17,7 @@ jobs:
       run: |
         sudo apt-get install csound
         sudo apt-get install csound-utils
+        sudo apt-get install clang-tools
         git clone https://github.com/daniel-kelley/libriffr
         make -C libriffr
         sudo make -C libriffr install
@@ -28,3 +29,12 @@ jobs:
         make clean
         make libs
         make SANITIZE=address check
+    - name: make check clang
+      run: |
+        make clean
+        make CC=clang libs
+        make CC=clang SANITIZE=address check
+    - name: scan-build make
+      run: |
+        make clean
+        scan-build make
