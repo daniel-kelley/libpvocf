@@ -33,7 +33,7 @@ jobs:
         make clean
         make CC=clang libs
         make CC=clang SANITIZE=address check
-   - name: scan-build make
+    - name: scan-build make
       run: |
         make clean
         scan-build make
