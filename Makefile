@@ -78,16 +78,23 @@ install: $(PROG) $(SHLIBRARY) $(LIBRARY)
 uninstall:
 	-rm -f $(PREFIX)/bin/wktplot
 
-#test: $(PROG)
-#	LD_LIBRARY_PATH=. ...
+chirp.wav: test/chirp.csd
+	csound $<
 
-#
-# libplot is a bit leaky, but svg and X plotter is leakier than ps
-#
-#valgrind-test: $(PROG)
-	LD_LIBRARY_PATH=. $(VG) ...
+chirp.pvx: chirp.wav
+	csound -U pvanal -n 4096 -h 1024 $< $@
+
+chirp.txt: pvocf-info chirp.pvx
+	LD_LIBRARY_PATH=. $(VG) $+ > $@ 2> chirp.err
+
+
+check: chirp.txt
+	cat $< chirp.err
 
 clean:
-	-rm -f $(PROG) $(SHLIBRARY) $(SHLIBRARY_VER) $(LIBRARY) $(OBJ) $(DEP)
+	-rm -f $(PROG) $(SHLIBRARY) $(SHLIBRARY_VER) $(LIBRARY) \
+		$(OBJ) $(DEP) \
+		chirp.wav chirp.pvx chirp.txt chirp.err
+
 
 -include $(DEP)
