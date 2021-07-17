@@ -75,6 +75,7 @@ install: $(PROG) $(SHLIBRARY) $(LIBRARY)
 	install -p -m 755 $(PROG) $(PREFIX)/bin
 	install -p -m 644 $(SHLIBRARY_VER) $(LIBRARY) $(PREFIX)/lib
 	-ln -sf $(SHLIBRARY_VER) $(PREFIX)/lib/$(SHLIBRARY)
+	ls -l $(PREFIX)/lib/libpvocf*
 
 uninstall:
 	-rm -f $(PREFIX)/bin/wktplot
