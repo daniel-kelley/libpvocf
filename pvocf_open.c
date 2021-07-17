@@ -36,11 +36,13 @@ static int pvocf_open_pvocex(struct pvocf *handle, struct riffr_chunk_type *form
 
         err = riffr_read_chunk_header(handle->riffr, &header);
         if (err) {
+            /* Error reading chunk header */
             break;
         }
 
         err = riffr_get_chunk_type(handle->riffr, header.id, &type);
         if (err) {
+            /* Error getting chunk type */
             break;
         }
 
@@ -70,6 +72,7 @@ static int pvocf_open_pvocex(struct pvocf *handle, struct riffr_chunk_type *form
 
         /* This is just hardcoded in csound/OOps/pvfileio.c to 62... */
         if (handle->info.fmt.cbSize != 62) {
+            /* Unexpected cbSize */
             err = -1;
             break;
         }
@@ -77,6 +80,7 @@ static int pvocf_open_pvocex(struct pvocf *handle, struct riffr_chunk_type *form
         if (memcmp(handle->info.fmt.SubFormat,
                    pvocf_guid,
                    sizeof(pvocf_guid))) {
+            /* PVOC GUID mismatch */
             err = -1;
             break;
         }
@@ -88,14 +92,44 @@ static int pvocf_open_pvocex(struct pvocf *handle, struct riffr_chunk_type *form
                                      fmt_extension,
                                      &handle->info.pvoc);
         if (ext_actual < 0) {
+            /* Error reading PVOC extension */
             err = -1;
             break;
         }
 
         if (ext_actual != fmt_extension) {
+            /* Error reading PVOC extension */
             err = -1;
             break;
         }
+
+        /* Read data chunk header */
+        err = riffr_read_chunk_header(handle->riffr, &header);
+        if (err) {
+            /* Error reading data chunk header */
+            break;
+        }
+
+        err = riffr_get_chunk_type(handle->riffr, header.id, &type);
+        if (err) {
+            /* Error getting data chunk type */
+            break;
+        }
+
+        hdr_str = riffr_type_str(type);
+        if (strcmp(hdr_str, "data")) {
+            /* no data chunk in WAVE file */
+            break;
+        }
+
+        err = (handle->info.data_size % handle->info.pvoc.dwFrameAlign) != 0;
+        if (err) {
+            /* Data chunk not an exact multiple of the frame size */
+            break;
+        }
+
+        handle->info.data_size = header.size;
+
 
         err = 0;
     } while (0);
