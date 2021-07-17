@@ -13,7 +13,7 @@ int pvocf_frame_count(struct pvocf *handle)
     int rc = -1;
 
     if (handle) {
-        rc = handle->info.pvoc.nAnalysisBins;
+        rc = handle->info.data_size / handle->info.pvoc.dwFrameAlign;
     }
 
     return rc;

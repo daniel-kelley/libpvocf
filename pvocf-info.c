@@ -17,7 +17,11 @@ struct info {
     int show_analysis;
     uint32_t frame_count;
     uint32_t frame_id;
+    uint32_t frame_fmt;
+    uint32_t bin_count;
 };
+
+#define BIN_SIZE (2*sizeof(float))
 
 static int show_analysis(struct pvocf *handle, const struct info *opt)
 {
@@ -27,23 +31,34 @@ static int show_analysis(struct pvocf *handle, const struct info *opt)
     int frame_size = pvocf_frame_size(handle);
     int i;
     int j;
+    const struct pvoc_info *info = pvocf_get_info(handle);
+    int bin_count = info->pvoc.nAnalysisBins;
+    float *f;
 
     do {
         if (frame_count < 0) {
             /* Error getting frame count. */
             break;
         }
+
         if (frame_size < 0) {
             /* Error getting frame size. */
             break;
         }
+
         if (opt->frame_count) {
             frame_count = opt->frame_count;
         }
+
+        if (opt->bin_count) {
+            bin_count = opt->bin_count;
+        }
+
         frame = calloc(frame_count, frame_size);
         if (!frame) {
             break;
         }
+
         err = pvocf_get_frame(handle,
                               opt->frame_id,
                               frame_count,
@@ -52,15 +67,23 @@ static int show_analysis(struct pvocf *handle, const struct info *opt)
         if (err) {
             break;
         }
+
         printf("data:\n");
-        for (i=0; i<frame_count; i++) {
-            float *f = frame;
-            printf("# bin %d\n", opt->frame_id + i);
+
+        for (f = frame, i=0; i<frame_count; i++) {
+            printf("# frame %d [amp,freq]\n", opt->frame_id + i);
             printf("-\n");
-            for (j=0; j<frame_size; j += (2*sizeof(float))) {
+            for (j=0; j<frame_size; j += (BIN_SIZE)) {
                 float amp = *f++;
                 float freq = *f++;
-                printf("  - [%g, %g]\n", amp, freq);
+                if (j >= (bin_count * (int)BIN_SIZE)) {
+                    continue;
+                }
+                if (opt->frame_fmt) {
+                    printf("  - [%.3f, %.3f]\n", amp, freq);
+                } else {
+                    printf("  - [%g, %g]\n", amp, freq);
+                }
             }
         }
         free(frame);
@@ -119,9 +142,11 @@ static void usage(const char *prog)
 {
     fprintf(stderr,"%s -f n [-vh] <input>\n", prog);
     fprintf(stderr,"  -h        Print this message\n");
-    fprintf(stderr,"  -n n      Start with analysis bin n\n");
-    fprintf(stderr,"  -a n      Show n analysis bins\n");
-    fprintf(stderr,"  -A        Show analysis bins\n");
+    fprintf(stderr,"  -n n      Start with analysis frame n\n");
+    fprintf(stderr,"  -a n      Show n analysis frames\n");
+    fprintf(stderr,"  -b n      Show first n analysis bins\n");
+    fprintf(stderr,"  -A        Show analysis frames\n");
+    fprintf(stderr,"  -F        Use %%.3f for analysis float format\n");
     fprintf(stderr,"  -v        Verbose\n");
 }
 
@@ -133,10 +158,13 @@ int main(int argc, char *argv[])
     struct info info;
 
     memset(&info, 0, sizeof(info));
-    while ((c = getopt(argc, argv, "a:n:Avh")) != EOF) {
+    while ((c = getopt(argc, argv, "a:n:b:AFvh")) != EOF) {
         switch (c) {
         case 'a':
             info.frame_count = strtoul(optarg, NULL, 0);
+            break;
+        case 'b':
+            info.bin_count = strtoul(optarg, NULL, 0);
             break;
         case 'A':
             info.show_analysis = 1;
@@ -146,6 +174,9 @@ int main(int argc, char *argv[])
             break;
         case 'v':
             info.verbose = 1;
+            break;
+        case 'F':
+            info.frame_fmt = 1;
             break;
         case 'h':
             usage(argv[0]);

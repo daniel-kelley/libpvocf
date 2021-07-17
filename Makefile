@@ -86,11 +86,13 @@ chirp.pvx: chirp.wav
 	csound -U pvanal -n 4096 -h 1024 $< $@
 
 chirp.txt: ./pvocf-info chirp.pvx
-	LD_LIBRARY_PATH=. ./$+ > $@ 2> chirp.err
+	LD_LIBRARY_PATH=. ./$+ -A -F -b8 > $@ 2> chirp.err
+
+chirp.all: ./pvocf-info chirp.pvx
+	LD_LIBRARY_PATH=. ./$+ -A > $@ 2> chirp.all.err
 
 chirp.asc: chirp.pvx
 	csound -U pvlook $< 2> $@
-
 
 check: chirp.txt
 	cat $< chirp.err
