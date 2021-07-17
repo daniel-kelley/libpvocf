@@ -74,7 +74,7 @@ $(SHLIBRARY_VER): $(PVOCFLIB_OBJ)
 install: $(PROG) $(SHLIBRARY) $(LIBRARY)
 	install -p -m 755 $(PROG) $(PREFIX)/bin
 	install -p -m 644 $(SHLIBRARY_VER) $(LIBRARY) $(PREFIX)/lib
-	ln -s $(SHLIBRARY_VER) $(PREFIX)/lib/$(SHLIBRARY)
+	ln -sf $(SHLIBRARY_VER) $(PREFIX)/lib/$(SHLIBRARY)
 
 uninstall:
 	-rm -f $(PREFIX)/bin/wktplot
