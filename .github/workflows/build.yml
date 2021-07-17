@@ -35,11 +35,12 @@ jobs:
         sudo make install
     - name: install check
       run: |
-        test -f /usr/local/bin/pvocf-info
-        test -f /usr/local/include/pvocf.h
-        test -f /usr/local/lib/libpvocf.a
-        test -f /usr/local/lib/libpvocf-0.1.so
-        test -L /usr/local/lib/libpvocf.so
+        which test
+        /usr/bin/test -f /usr/local/bin/pvocf-info
+        /usr/bin/test -f /usr/local/include/pvocf.h
+        /usr/bin/test -f /usr/local/lib/libpvocf.a
+        /usr/bin/test -f /usr/local/lib/libpvocf-0.1.so
+        /usr/bin/test -L /usr/local/lib/libpvocf.so
     - name: make uninstall
       run: |
         sudo make uninstall
