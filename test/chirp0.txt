@@ -15,3 +15,4 @@ pvoc.dwOverlap: 1024
 pvoc.dwFrameAlign: 16392
 pvoc.fAnalysisRate: 46.875
 pvoc.fWindowParam: 0
+data.size: 1639200

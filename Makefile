@@ -44,6 +44,7 @@ PVOCFLIB_SRC += pvocf_close.c
 PVOCFLIB_SRC += pvocf_frame_count.c
 PVOCFLIB_SRC += pvocf_get_frame.c
 PVOCFLIB_SRC += pvocf_get_info.c
+PVOCFLIB_SRC += pvocf_frame_size.c
 PVOCFLIB_LDLIBS := -lriffr
 PVOCFLIB_OBJ := $(PVOCFLIB_SRC:%.c=%.o)
 PVOCFLIB_DEP := $(PVOCFLIB_SRC:%.c=%.d)
@@ -86,6 +87,10 @@ chirp.pvx: chirp.wav
 
 chirp.txt: ./pvocf-info chirp.pvx
 	LD_LIBRARY_PATH=. ./$+ > $@ 2> chirp.err
+
+chirp.asc: chirp.pvx
+	csound -U pvlook $< 2> $@
+
 
 check: chirp.txt
 	cat $< chirp.err

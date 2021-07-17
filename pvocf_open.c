@@ -97,6 +97,24 @@ static int pvocf_open_pvocex(struct pvocf *handle, struct riffr_chunk_type *form
             break;
         }
 
+        /* Read data chunk header */
+        err = riffr_read_chunk_header(handle->riffr, &header);
+        if (err) {
+            break;
+        }
+
+        err = riffr_get_chunk_type(handle->riffr, header.id, &type);
+        if (err) {
+            break;
+        }
+
+        hdr_str = riffr_type_str(type);
+        if (strcmp(hdr_str, "data")) {
+            /* no data chunk in WAVE file */
+            break;
+        }
+        handle->info.data_size = header.size;
+
         err = 0;
     } while (0);
 
