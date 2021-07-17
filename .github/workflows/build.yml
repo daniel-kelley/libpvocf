@@ -29,6 +29,21 @@ jobs:
         make clean
         make libs
         make SANITIZE=address check
+    - name: make install
+      run: |
+        make clean
+        sudo make install
+        test -f /usr/local/bin/pvocf-info
+        test -f /usr/local/include/pvocf.h
+        test -f /usr/local/lib/libpvocf.a
+        test -f /usr/local/lib/libpvocf-0.1.so
+        test -L /usr/local/lib/libpvocf.so
+        sudo make uninstall
+        test \! -f /usr/local/bin/pvocf-info
+        test \! -f /usr/local/include/pvocf.h
+        test \! -f /usr/local/lib/libpvocf.a
+        test \! -f /usr/local/lib/libpvocf-0.1.so
+        test \! -L /usr/local/lib/libpvocf.so
     - name: make check clang
       run: |
         make clean
