@@ -73,13 +73,16 @@ $(SHLIBRARY_VER): $(PVOCFLIB_OBJ)
 
 install: $(PROG) $(SHLIBRARY) $(LIBRARY)
 	install -p -m 755 $(PROG) $(PREFIX)/bin
+	install -p -m 644 pvocf.h $(PREFIX)/include
 	install -p -m 644 $(SHLIBRARY_VER) $(LIBRARY) $(PREFIX)/lib
 	-ln -sf $(SHLIBRARY_VER) $(PREFIX)/lib/$(SHLIBRARY)
-	ls -l $(PREFIX)/lib/libpvocf*
-	ls -l $(PREFIX)/bin/pvocf*
 
 uninstall:
-	-rm -f $(PREFIX)/bin/wktplot
+	-rm -f $(PREFIX)/bin/$(PROG) \
+		$(PREFIX)/include/pvocf.h \
+		$(PREFIX)/lib/$(LIBRARY) \
+		$(PREFIX)/lib/$(SHLIBRARY) \
+		$(PREFIX)/lib/$(SHLIBRARY_VER)
 
 chirp.wav: test/chirp.csd
 	csound $<
